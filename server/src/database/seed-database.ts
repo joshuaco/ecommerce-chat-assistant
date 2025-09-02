@@ -1,11 +1,11 @@
-import { MongoDBAtlasVectorSearch } from '@langchain/mongodb';
+import { GOOGLE_API_KEY } from '../config/constants';
 import { connectToDB } from './config';
+import { MongoDBAtlasVectorSearch } from '@langchain/mongodb';
 import { createItemSummary } from './create-item-summary';
 import { createVectorSearchIndex } from './create-vector-search-index';
 import { generateSyntheticData } from './generate-synthetic-data';
 import { setupDatabaseAndCollection } from './setup-database';
 import { GoogleGenerativeAIEmbeddings } from '@langchain/google-genai';
-import { GOOGLE_API_KEY } from '../config/constants';
 
 export async function seedDatabase() {
   console.log('Seeding database...');

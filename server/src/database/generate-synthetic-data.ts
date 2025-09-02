@@ -7,7 +7,5 @@ export async function generateSyntheticData(): Promise<Item[]> {
 
   const response = await geminiChatModel.invoke(generateItemsPrompt);
 
-  console.log('Response:', response.content);
-
   return itemsParser.parse(response.content as string);
 }
