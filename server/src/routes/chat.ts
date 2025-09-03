@@ -1,7 +1,7 @@
 import { MONGO_DB_URI } from '../config/constants';
 import { Router } from 'express';
 import { MongoClient } from 'mongodb';
-import { callAgent } from '../handlers/agent';
+import { callAgent } from '../agent/call-agent';
 
 const router = Router();
 const client = new MongoClient(MONGO_DB_URI as string);
