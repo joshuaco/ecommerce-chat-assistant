@@ -1,8 +1,14 @@
+import { Routes, Route } from 'react-router';
+import MainLayout from '@/layouts/main';
+import HomePage from '@/pages/home-page';
+
 function App() {
   return (
-    <div className='bg-red-500'>
-      <h1>Hello World</h1>
-    </div>
+    <Routes>
+      <Route path='/' element={<MainLayout />}>
+        <Route index element={<HomePage />} />
+      </Route>
+    </Routes>
   );
 }
 
