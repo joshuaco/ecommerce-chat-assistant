@@ -6,7 +6,7 @@ function MainLayout() {
     <>
       <Header />
 
-      <main>
+      <main className='max-w-7xl mx-auto px-4 sm:px-6 py-4 lg:py-6'>
         <Outlet />
       </main>
     </>
