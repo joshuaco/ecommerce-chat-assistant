@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { getProducts } from '@/api/products';
 import type { Items } from '@/schema/product';
 
+import ProductCard from './product-card';
+
 const categories = ['All', 'Beds', 'Tables', 'Sofas', 'Decor'];
 
 function ProductGrid() {
@@ -36,9 +38,7 @@ function ProductGrid() {
       {/* Products Grid */}
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
         {products.map((product) => (
-          <div key={product.item_id} className='bg-white rounded-lg shadow-md p-4'>
-            <h3>{product.item_name}</h3>
-          </div>
+          <ProductCard key={product.item_id} product={product} />
         ))}
       </div>
     </>
