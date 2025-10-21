@@ -1,11 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Bot, BotMessageSquare, Send, User, X } from 'lucide-react';
 import type { Message } from '@/schema/message';
+import { createChatSession, sendMessage } from '@/api/chat';
 
 function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [sessionID, setSessionID] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
@@ -20,19 +23,39 @@ function ChatWidget() {
     }
   }, [isOpen, messages.length]);
 
-  const handleSendMessage = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setMessages([
-      ...messages,
+    const message = {
+      id: (messages.length + 1).toString(),
+      text: inputValue,
+      sender: 'user',
+      timestamp: new Date()
+    } as Message;
+
+    setMessages((prevMessages) => [...prevMessages, message]);
+    setInputValue('');
+
+    const response = sessionID
+      ? await sendMessage(sessionID, message.text)
+      : await createChatSession(message.text);
+
+    if (!sessionID) {
+      setSessionID(response.sessionID);
+    }
+
+    setMessages((prevMessages) => [
+      ...prevMessages,
       {
         id: (messages.length + 1).toString(),
-        text: inputValue,
-        sender: 'user',
+        text: response.response,
+        sender: 'assistant',
         timestamp: new Date()
       }
     ]);
-    console.log(messages);
-    setInputValue('');
   };
 
   return (
@@ -108,6 +131,7 @@ function ChatWidget() {
                 </div>
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
 
           {/* Chat Input */}
